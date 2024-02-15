@@ -37,8 +37,15 @@ export function InMemoryCheckInsRepository(): ICheckInRepository {
     return checkInOnSameDate
   }
 
+  async function findManyByUserId(userId: string, page: number) {
+    return checkInsArr
+      .filter((checkIn) => checkIn.user_id === userId)
+      .slice((page - 1) * 20, page * 20)
+  }
+
   return {
     create,
     findByUserIdOnDate,
+    findManyByUserId,
   }
 }
