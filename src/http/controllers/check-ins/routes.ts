@@ -5,6 +5,7 @@ import { create } from './create.controller'
 import { validate } from './validate.controller'
 import { history } from './history.controller'
 import { metrics } from './metrics.controller'
+import { checkPermissions } from '../middlewares/check-permissions'
 
 export async function checkInsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -15,5 +16,9 @@ export async function checkInsRoutes(app: FastifyInstance) {
 
   app.post('/gyms/:gymId/check-ins', create)
 
-  app.patch('/check-ins/:checkInId/validate', validate)
+  app.patch(
+    '/check-ins/:checkInId/validate',
+    { onRequest: [checkPermissions('ADMIN')] },
+    validate,
+  )
 }
