@@ -6,6 +6,8 @@ import { IGymRepository } from '@/repositories/igyms.repository'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { ResourceNotFoundException } from './exceptions/resource-not-found.exception'
+import { MaxNumberOfCheckInsException } from './exceptions/max-number-of-checkins.expection'
+import { MaxDistanceException } from './exceptions/max-distance.exception'
 
 let checkinsRepository: ICheckInRepository
 let gymsRepository: IGymRepository
@@ -17,15 +19,14 @@ describe('Check-In Service', () => {
     gymsRepository = InMemoryGymsRepository()
     sut = await checkInService(checkinsRepository, gymsRepository)
 
-    const mockGym = {
+    await gymsRepository.create({
       id: 'gym-1',
       title: 'gym test',
       description: 'test',
       phone: '999888777',
       latitude: new Decimal(-22.5160963),
       longitude: new Decimal(-44.102109),
-    }
-    await gymsRepository.addGym(mockGym)
+    })
 
     vi.useFakeTimers()
   })
@@ -73,7 +74,7 @@ describe('Check-In Service', () => {
         userLatitude: -22.5160963,
         userLongitude: -44.102109,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsException)
   })
 
   it('should be able to check in twice but on different days', async () => {
@@ -96,15 +97,14 @@ describe('Check-In Service', () => {
     expect(checkIn.id).toEqual(expect.any(String))
   })
   it('should not be able to check in on a distant gym', async () => {
-    const mockGym = {
+    await gymsRepository.create({
       id: 'gym-2',
       title: 'gym test 2',
       description: 'test 2',
       phone: '9998887776',
       latitude: new Decimal(-22.517579),
       longitude: new Decimal(-44.0009755),
-    }
-    await gymsRepository.addGym(mockGym)
+    })
 
     await expect(() =>
       sut.execute({
@@ -113,6 +113,6 @@ describe('Check-In Service', () => {
         userLatitude: -22.5160963,
         userLongitude: -44.102109,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxDistanceException)
   })
 })
