@@ -49,7 +49,7 @@ describe('Register Service', () => {
       password: '123456',
     })
 
-    expect(async () =>
+    await expect(async () =>
       register.execute({
         name: 'User Test',
         email,

@@ -2,3 +2,5 @@ build
 node_modules
 .env
 prisma/migrations/*.toml
+coverage
+questions.md
