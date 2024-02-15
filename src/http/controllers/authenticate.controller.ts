@@ -1,7 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository'
-import { authenticateService } from '@/services/authenticate.service'
 import { InvalidCredentialsException } from '@/services/exceptions/invalid-credentials.exception'
 import { makeAuthService } from '@/services/factories/make-auth-service'
 
