@@ -1,8 +1,8 @@
 import { Gym, Prisma } from '@prisma/client'
 import { IGymRepository } from '../igyms.repository'
 
-export const gyms: Gym[] = []
 export function InMemoryGymsRepository(): IGymRepository {
+  const gyms: Gym[] = []
   async function findById(gymId: string) {
     const gym = gyms.find((gym) => gym.id === gymId)
 
@@ -28,8 +28,15 @@ export function InMemoryGymsRepository(): IGymRepository {
     return gym
   }
 
+  async function searchMany(query: string, page: number) {
+    return gyms
+      .filter((gym) => gym.title.includes(query))
+      .slice((page - 1) * 20, page * 20)
+  }
+
   return {
     findById,
     create,
+    searchMany,
   }
 }
