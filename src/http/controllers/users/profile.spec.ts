@@ -1,8 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { app } from '@/app'
+import { createAndAuthUser } from '@/utils/tests/create-and-auth-user'
 
-describe('Profile Controller E2E', () => {
+describe('User Profile Controller E2E', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -11,19 +12,7 @@ describe('Profile Controller E2E', () => {
   })
 
   it('should be able to get user profiles', async () => {
-    await request(app.server).post('/users').send({
-      name: 'User Test',
-      email: 'userTest@prisma.com',
-      password: '123456',
-    })
-
-    const authResponse = await request(app.server).post('/sessions').send({
-      email: 'userTest@prisma.com',
-      password: '123456',
-    })
-
-    const { token } = authResponse.body
-
+    const { token } = await createAndAuthUser(app)
     const profileResponse = await request(app.server)
       .get('/me')
       .set('Authorization', `Bearer ${token}`)
