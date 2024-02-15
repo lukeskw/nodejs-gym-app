@@ -5,7 +5,7 @@ Gympass style app
 ## Functional Requirements
 
 - [x] Should be possible to register;
-- [] Should be possible to authenticate;
+- [x] Should be possible to authenticate;
 - [] Should be possible to get logged user profile information;
 - [] Should be possible to obtain the total check-in quantity of the logged user;
 - [] Should be possible to the user to get his check-in history;
