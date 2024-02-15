@@ -23,6 +23,7 @@ export function GymsRepository(): IGymRepository {
       where: {
         title: {
           contains: query,
+          mode: 'insensitive',
         },
       },
       take: 20,
