@@ -29,6 +29,7 @@ export async function registerService(
 
     const userWithSameEmail = await usersRepository.findByEmail(email)
     if (userWithSameEmail) {
+      console.log()
       throw new UserAlreadyExistsException()
     }
 
