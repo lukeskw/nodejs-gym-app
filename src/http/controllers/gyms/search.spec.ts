@@ -12,7 +12,7 @@ describe('Search Gyms Controller E2E', () => {
   })
 
   it('should be able to search for a gym by title', async () => {
-    const { token } = await createAndAuthUser(app)
+    const { token } = await createAndAuthUser(app, true)
     await request(app.server)
       .post('/gyms')
       .set('Authorization', `Bearer ${token}`)
