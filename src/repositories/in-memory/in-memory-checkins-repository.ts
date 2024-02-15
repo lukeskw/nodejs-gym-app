@@ -43,9 +43,14 @@ export function InMemoryCheckInsRepository(): ICheckInRepository {
       .slice((page - 1) * 20, page * 20)
   }
 
+  async function countByUserId(userId: string) {
+    return checkInsArr.filter((checkIn) => checkIn.user_id === userId).length
+  }
+
   return {
     create,
     findByUserIdOnDate,
     findManyByUserId,
+    countByUserId,
   }
 }
