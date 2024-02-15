@@ -47,10 +47,32 @@ export function InMemoryCheckInsRepository(): ICheckInRepository {
     return checkInsArr.filter((checkIn) => checkIn.user_id === userId).length
   }
 
+  async function findById(id: string) {
+    const checkIn = checkInsArr.find((checkIn) => checkIn.id === id)
+
+    if (!checkIn) {
+      return null
+    }
+
+    return checkIn
+  }
+
+  async function save(checkIn: CheckIn) {
+    const index = checkInsArr.findIndex((item) => item.id === checkIn.id)
+
+    if (index >= 0) {
+      checkInsArr[index] = checkIn
+    }
+
+    return checkIn
+  }
+
   return {
     create,
     findByUserIdOnDate,
     findManyByUserId,
     countByUserId,
+    findById,
+    save,
   }
 }
