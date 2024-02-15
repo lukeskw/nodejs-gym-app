@@ -13,7 +13,7 @@ interface IUserResponse {
   user: User
 }
 
-interface IRegisterService {
+export interface IRegisterService {
   execute: ({
     name,
     email,

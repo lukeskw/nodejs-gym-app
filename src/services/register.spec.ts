@@ -1,14 +1,20 @@
-import { describe, expect, it } from 'vitest'
-import { registerService } from './register.service'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { IRegisterService, registerService } from './register.service'
 import { compare } from 'bcryptjs'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserAlreadyExistsException } from './exceptions/user-already-exists.exception'
+import { IUserRepository } from '@/repositories/iusers.repository'
+
+let usersRepository: IUserRepository
+let sut: IRegisterService
 
 describe('Register Service', () => {
-  it('should be able to register', async () => {
-    const usersRepository = InMemoryUsersRepository()
-    const sut = await registerService(usersRepository)
+  beforeEach(async () => {
+    usersRepository = InMemoryUsersRepository()
+    sut = await registerService(usersRepository)
+  })
 
+  it('should be able to register', async () => {
     const { user } = await sut.execute({
       name: 'User Test',
       email: 'userTest@prisma.com',
@@ -21,8 +27,8 @@ describe('Register Service', () => {
     // as unit tests go, we should not need to implement the userRepository, because this type of test should not depend on databases
     // const usersRepository = PrismaUsersRepository()
 
-    const usersRepository = InMemoryUsersRepository()
-    const sut = await registerService(usersRepository)
+    // const usersRepository = InMemoryUsersRepository()
+    // const sut = await registerService(usersRepository)
 
     const { user } = await sut.execute({
       name: 'User Test',
@@ -38,9 +44,6 @@ describe('Register Service', () => {
   })
 
   it('should not be able to register with same email', async () => {
-    const usersRepository = InMemoryUsersRepository()
-    const sut = await registerService(usersRepository)
-
     const email = 'userTest@prisma.com'
 
     await sut.execute({

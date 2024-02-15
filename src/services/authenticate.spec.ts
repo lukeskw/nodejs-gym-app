@@ -1,15 +1,20 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { authenticateService } from './authenticate.service'
+import { IAuthService, authenticateService } from './authenticate.service'
 import { hash } from 'bcryptjs'
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception'
+import { IUserRepository } from '@/repositories/iusers.repository'
+
+let usersRepository: IUserRepository
+let sut: IAuthService
 
 describe('Auth Service', () => {
-  it('should be able to authenticate', async () => {
-    const usersRepository = InMemoryUsersRepository()
-    const sut = await authenticateService(usersRepository)
-    // system under testing
+  beforeEach(async () => {
+    usersRepository = InMemoryUsersRepository()
+    sut = await authenticateService(usersRepository)
+  })
 
+  it('should be able to authenticate', async () => {
     await usersRepository.create({
       name: 'User Test',
       email: 'userTest@prisma.com',
@@ -24,10 +29,6 @@ describe('Auth Service', () => {
     expect(user.id).toEqual(expect.any(String))
   })
   it('should be able to authenticate with wrong email', async () => {
-    const usersRepository = InMemoryUsersRepository()
-    const sut = await authenticateService(usersRepository)
-    // system under testing
-
     await usersRepository.create({
       name: 'User Test',
       email: 'userTest@prisma.com',
@@ -42,10 +43,6 @@ describe('Auth Service', () => {
     ).rejects.toBeInstanceOf(InvalidCredentialsException)
   })
   it('should be able to authenticate with wrong password', async () => {
-    const usersRepository = InMemoryUsersRepository()
-    const sut = await authenticateService(usersRepository)
-    // system under testing
-
     await usersRepository.create({
       name: 'User Test',
       email: 'userTest@prisma.com',

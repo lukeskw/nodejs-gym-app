@@ -12,6 +12,13 @@ interface IAuthServiceResponse {
   user: User
 }
 
+export interface IAuthService {
+  execute: ({
+    email,
+    password,
+  }: IAuthServiceRequest) => Promise<IAuthServiceResponse>
+}
+
 export async function authenticateService(userRepository: IUserRepository) {
   async function execute({
     email,
