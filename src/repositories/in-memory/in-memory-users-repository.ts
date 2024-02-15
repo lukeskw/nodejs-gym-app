@@ -28,8 +28,19 @@ export function InMemoryUsersRepository(): IUserRepository {
     return user
   }
 
+  async function findById(userId: string) {
+    const user = registers.find((user) => user.id === userId)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
   return {
     create,
     findByEmail,
+    findById,
   }
 }

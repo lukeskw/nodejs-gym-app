@@ -18,8 +18,18 @@ export function PrismaUsersRepository(): IUserRepository {
     return user
   }
 
+  async function findById(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    })
+    return user
+  }
+
   return {
     create,
     findByEmail,
+    findById,
   }
 }
