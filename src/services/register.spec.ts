@@ -7,9 +7,9 @@ import { UserAlreadyExistsException } from './exceptions/user-already-exists.exc
 describe('Register Service', () => {
   it('should be able to register', async () => {
     const usersRepository = InMemoryUsersRepository()
-    const register = await registerService(usersRepository)
+    const sut = await registerService(usersRepository)
 
-    const { user } = await register.execute({
+    const { user } = await sut.execute({
       name: 'User Test',
       email: 'userTest@prisma.com',
       password: '123456',
@@ -22,9 +22,9 @@ describe('Register Service', () => {
     // const usersRepository = PrismaUsersRepository()
 
     const usersRepository = InMemoryUsersRepository()
-    const register = await registerService(usersRepository)
+    const sut = await registerService(usersRepository)
 
-    const { user } = await register.execute({
+    const { user } = await sut.execute({
       name: 'User Test',
       email: 'userTest@prisma.com',
       password: '123456',
@@ -39,18 +39,18 @@ describe('Register Service', () => {
 
   it('should not be able to register with same email', async () => {
     const usersRepository = InMemoryUsersRepository()
-    const register = await registerService(usersRepository)
+    const sut = await registerService(usersRepository)
 
     const email = 'userTest@prisma.com'
 
-    await register.execute({
+    await sut.execute({
       name: 'User Test',
       email,
       password: '123456',
     })
 
     await expect(async () =>
-      register.execute({
+      sut.execute({
         name: 'User Test',
         email,
         password: '123456',
