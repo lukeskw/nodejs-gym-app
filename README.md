@@ -21,8 +21,8 @@ Gympass style app
 - [x] User cant do 2 check-ins in the same day;
 - [x] User cant do a check-in operation if he's close (100mts) to the gym;
 - [x] Check-in can only be validated until after 20 minutes after creation;
-- [] Check-in can only be validated by admins;
-- [] Gym can only be registered by admins;
+- [x] Check-in can only be validated by admins;
+- [x] Gym can only be registered by admins;
 
 ## Non-Functional Requirements
 
