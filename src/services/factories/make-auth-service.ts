@@ -1,8 +1,8 @@
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository'
+import { UsersRepository } from '@/repositories/prisma/prisma-users.repository'
 import { authenticateService } from '../authenticate.service'
 
 export async function makeAuthService() {
-  const usersRepository = PrismaUsersRepository()
+  const usersRepository = UsersRepository()
 
   const auth = await authenticateService(usersRepository)
 

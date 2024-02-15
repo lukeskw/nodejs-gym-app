@@ -2,7 +2,7 @@ import { prisma } from '@/lib/database'
 import { Prisma } from '@prisma/client'
 import { IUserRepository } from '../iusers.repository'
 
-export function PrismaUsersRepository(): IUserRepository {
+export function UsersRepository(): IUserRepository {
   async function create(data: Prisma.UserCreateInput) {
     const user = await prisma.user.create({
       data,
