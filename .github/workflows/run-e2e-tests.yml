@@ -26,9 +26,17 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
       - name: Install dependencies
-        run: npm ci
-      - run: npm run test:e2e
+        run: pnpm install --frozen-lockfile
+      - name: Prisma Generate
+        run: pnpm exec prisma generate
+      - run: pnpm run test:e2e
         env:
           API_KEY: randomiccharstotestci19a1c77df6dc95cc851aa872527419f36b03313385b
           DATABASE_URL: "postgresql://docker:docker@localhost:5432/api_gymApp?schema=public"
